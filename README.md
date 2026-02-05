@@ -11,6 +11,14 @@ mkdir -p ~/.claude/skills
 git clone https://github.com/missuo/ship.git ~/.claude/skills/ship
 ```
 
+#### Update
+
+If you installed via git clone, update with:
+
+```bash
+cd ~/.claude/skills/ship && git pull
+```
+
 ### Manual install/update (only the skill file)
 
 If you already have this repo cloned, copy the skill file into Claude Code's skills directory:
