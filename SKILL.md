@@ -146,7 +146,7 @@ Extract scope from file paths:
 
 - Maximum 50 characters
 - Imperative mood ("add" not "added")
-- Capitalize first letter
+- Start with lowercase letter (except for proper nouns like JSON, API, UI)
 - No period at end
 - Be specific but concise
 
@@ -154,6 +154,7 @@ Examples:
 - `feat(api): add user login endpoint`
 - `fix(ui): correct button alignment on mobile`
 - `docs(readme): update installation instructions`
+- `feat(config): add JSON schema validation` (JSON is uppercase as a proper noun)
 
 ### Step 5: Optional Body
 
