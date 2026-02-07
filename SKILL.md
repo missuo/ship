@@ -166,7 +166,7 @@ For complex changes, include a body (wrapped at 72 characters):
 ### Step 6: Execute Git Commands
 
 1. `git add -A` (or specific files if requested)
-2. `git commit -m "<message>"`
+2. `git commit -m "<message>"` — Do NOT append any `Co-Authored-By` trailer
 3. `git push` (if remote exists and tracking is set up)
 
 If no upstream branch: `git push -u origin <current-branch>`
