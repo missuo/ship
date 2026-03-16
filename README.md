@@ -4,7 +4,13 @@ A Claude Code skill that automatically generates conventional commit messages an
 
 ## Installation
 
-### Recommended (clone directly into Claude Code skills directory)
+### Using skills CLI (recommended)
+
+```bash
+npx skills add missuo/ship
+```
+
+### Clone directly into Claude Code skills directory
 
 ```bash
 mkdir -p ~/.claude/skills
