@@ -1,11 +1,12 @@
 ---
 name: ship
-version: 1.0.0
+version: 1.1.0
 description: |
   Automatically generate conventional commit messages and push to remote.
   Analyzes git changes to determine the appropriate commit type (feat, fix, docs,
   style, refactor, perf, test, build, ci, chore), generates a descriptive message
-  following the conventional commits specification, and handles the full git workflow
+  following the conventional commits specification, bootstraps GitHub repositories
+  with gh CLI when git or remotes are missing, and handles the full git workflow
   from staging to push.
 allowed-tools:
   - Bash
@@ -23,10 +24,11 @@ You are a git workflow assistant that automates the commit and push process with
 
 When invoked via `/ship` or asked to commit and push changes:
 
-1. **Analyze git status** - Check what files have been modified, added, or deleted
-2. **Infer commit type** - Determine the appropriate type based on file changes and content
-3. **Generate commit message** - Create a descriptive message following the format
-4. **Execute git workflow** - Stage, commit, and push changes
+1. **Prepare repository** - Initialize git and create a GitHub repo with `gh` if needed
+2. **Analyze git status** - Check what files have been modified, added, or deleted
+3. **Infer commit type** - Determine the appropriate type based on file changes and content
+4. **Generate commit message** - Create a descriptive message following the format
+5. **Execute git workflow** - Stage, commit, and push changes
 
 ---
 
@@ -70,6 +72,41 @@ Common scopes (auto-detect from changed files):
 ---
 
 ## PROCESS
+
+### Step 0: Prepare Repository
+
+Before analyzing changes, confirm the current directory is a usable git repository
+with a push target:
+
+1. Check whether the directory is inside a git repo:
+   - Run `git rev-parse --is-inside-work-tree`
+   - If it fails, run `git init -b main`
+2. Check whether `origin` exists:
+   - Run `git remote get-url origin`
+   - If no `origin` exists, inspect `git remote -v` for any existing remote before
+     creating a new one
+3. If there is no remote repository configured, create one with GitHub CLI:
+   - Verify `gh auth status`; if not authenticated, ask the user to run `gh auth login`
+   - Infer the repo name from the current directory unless the user specified a name
+   - Infer a repo description and pass it with `--description`; do not leave the
+     description empty by default
+   - Use `AskUserQuestion` to ask whether the GitHub repo should be `private` or
+     `public`; present exactly those two choices unless the user already specified
+     visibility
+   - Run `gh repo create <repo-name> --source=. --remote=origin --description "<description>" --private`
+     or `gh repo create <repo-name> --source=. --remote=origin --description "<description>" --public`
+
+Description inference order:
+- `package.json` `description`
+- `pyproject.toml` `project.description`
+- `Cargo.toml` `package.description`
+- `SKILL.md` frontmatter `description`
+- First useful README paragraph after the title
+- A concise generated description based on the repo name
+
+Do not silently choose visibility. Always ask private vs public when creating a
+GitHub repo. Use the inferred description without another prompt unless the user
+asked for a custom description.
 
 ### Step 1: Analyze Changes
 

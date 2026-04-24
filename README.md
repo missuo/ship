@@ -1,6 +1,6 @@
 # Ship
 
-A Claude Code skill that automatically generates conventional commit messages and handles the full git workflow from staging to push.
+A Claude Code skill that automatically generates conventional commit messages, bootstraps a GitHub repo with `gh` when needed, and handles the full git workflow from staging to push.
 
 ## Installation
 
@@ -57,8 +57,12 @@ This skill analyzes your git changes to automatically determine the appropriate 
 - **Automatic type inference** - Detects commit type from file changes
 - **Smart scope detection** - Extracts scope from file paths
 - **Descriptive messages** - Generates clear, concise commit summaries
+- **Repository bootstrap** - Initializes git and creates a GitHub repo with `gh` if no remote exists
+- **Repo description handling** - Infers and sets the GitHub repository description during creation
 - **Full workflow** - Stages, commits, and pushes in one command
 - **Safety checks** - Warns about sensitive files and large changes
+
+When a project has no git repository or no configured remote, the skill uses GitHub CLI to create one. It asks whether the repo should be private or public, infers a repo description from project metadata or README content, and passes that description to `gh repo create`.
 
 ## Commit Type Detection
 
@@ -238,6 +242,7 @@ git push
 
 ## Version History
 
+- **1.1.0** - Add git/GitHub repository bootstrap with interactive visibility selection
 - **1.0.0** - Initial release with automatic commit type detection
 
 ## License
